@@ -10,6 +10,8 @@ const CartPage = () => {
         cartTotal
     } = useCart();
 
+    const cartItemTotal = (item) => item.price * item.quantity;
+
     return (
         <div className="min-h-screen bg-black text-white py-12">
             <div className="container mx-auto px-4">
@@ -39,7 +41,10 @@ const CartPage = () => {
                                     </div>
                                     <div className="flex-1">
                                         <h3 className="text-xl font-semibold text-purple-100">{item.title}</h3>
-                                        <p className="text-purple-300 mb-2">₹{item.price}</p>
+                                        <p className="text-purple-300 mb-2">Unit Price: ₹{item.price.toFixed(2)}</p>
+                                        <p className="text-purple-400 mb-2 font-medium">
+                                            Item Total: ₹{(item.price * item.quantity).toFixed(2)}
+                                        </p>
                                         <div className="flex items-center gap-4">
                                             <div className="flex items-center border border-purple-700 rounded">
                                                 <button
@@ -73,11 +78,11 @@ const CartPage = () => {
                             <div className="space-y-4">
                                 <div className="flex justify-between">
                                     <span>Subtotal ({cart.reduce((acc, item) => acc + item.quantity, 0)} items)</span>
-                                    <span>₹{cartTotal}</span>
+                                    <span>₹{cartTotal.toFixed(2)}</span>
                                 </div>
                                 <div className="flex justify-between font-bold text-lg">
                                     <span>Total</span>
-                                    <span>₹{cartTotal}</span>
+                                    <span>₹{cartTotal.toFixed(2)}</span>
                                 </div>
                                 <button className="w-full bg-purple-600 text-white py-3 rounded hover:bg-purple-700 transition">
                                     Proceed to Checkout
