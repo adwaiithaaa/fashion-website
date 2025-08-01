@@ -23,10 +23,10 @@ export const CartProvider = ({ children }) => {
 
     const addToCart = (product) => {
         setCart(prevCart => {
-            const existingItem = prevCart.find(item => item.id === product.id);
+            const existingItem = prevCart.find(item => item.uniqueId === product.uniqueId);
             if (existingItem) {
                 return prevCart.map(item =>
-                    item.id === product.id
+                    item.uniqueId === product.uniqueId
                         ? { ...item, quantity: item.quantity + 1 }
                         : item
                 );
@@ -36,17 +36,17 @@ export const CartProvider = ({ children }) => {
         });
     };
 
-    const removeFromCart = (productId) => {
-        setCart(prevCart => prevCart.filter(item => item.id !== productId));
+    const removeFromCart = (productId, selectedSize) => {
+        setCart(prevCart => prevCart.filter(item => !(item.id === productId && item.selectedSize === selectedSize)));
     };
 
-    const updateQuantity = (productId, newQuantity) => {
+    const updateQuantity = (productId, selectedSize, newQuantity) => {
         if (newQuantity < 1) {
-            removeFromCart(productId);
+            removeFromCart(productId, selectedSize);
         } else {
             setCart(prevCart =>
                 prevCart.map(item =>
-                    item.id === productId
+                    item.id === productId && item.selectedSize === selectedSize
                         ? { ...item, quantity: newQuantity }
                         : item
                 )
@@ -57,7 +57,6 @@ export const CartProvider = ({ children }) => {
     const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
     const cartTotal = cart.reduce((total, item) => total + item.price * item.quantity, 0);
 
-    // Optional: Add per-item total helper if needed
     const cartWithItemTotals = cart.map(item => ({
         ...item,
         itemTotal: item.price * item.quantity,
@@ -67,7 +66,7 @@ export const CartProvider = ({ children }) => {
         <CartContext.Provider
             value={{
                 cart,
-                cartWithItemTotals, // 🆕 exposed
+                cartWithItemTotals,
                 addToCart,
                 removeFromCart,
                 updateQuantity,

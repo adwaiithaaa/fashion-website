@@ -141,8 +141,7 @@ const MainSellerPage = () => {
                                     className="bg-gray-900 border border-purple-800/50 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl"
                                 >
                                     <Link to={`/product/${product.id}`}>
-
-                                    <div className="relative h-64">
+                                        <div className="relative h-64">
                                             <motion.img
                                                 src={product.image || '/default-image.jpg'}
                                                 alt={product.title || 'Product image'}
@@ -150,7 +149,7 @@ const MainSellerPage = () => {
                                             />
                                             <div className="absolute bottom-0 w-full p-4 bg-gradient-to-t from-black/70 to-transparent">
                                                 <span className="text-white font-semibold text-lg">
-                                                    ₹{product.price}
+                                                    {product.price.toLocaleString()} points
                                                 </span>
                                             </div>
                                         </div>
@@ -180,6 +179,7 @@ const MainSellerPage = () => {
 };
 
 export default MainSellerPage;
+
 
 
 

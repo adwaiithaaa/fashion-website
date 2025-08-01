@@ -10,8 +10,6 @@ const CartPage = () => {
         cartTotal
     } = useCart();
 
-    const cartItemTotal = (item) => item.price * item.quantity;
-
     return (
         <div className="min-h-screen bg-black text-white py-12">
             <div className="container mx-auto px-4">
@@ -31,7 +29,7 @@ const CartPage = () => {
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                         <div className="lg:col-span-2">
                             {cart.map(item => (
-                                <div key={item.id} className="flex flex-col sm:flex-row gap-4 border-b border-purple-900 py-6">
+                                <div key={item.uniqueId} className="flex flex-col sm:flex-row gap-4 border-b border-purple-900 py-6">
                                     <div className="w-full sm:w-32 h-32 bg-gray-800 rounded overflow-hidden">
                                         <img
                                             src={item.image}
@@ -41,28 +39,29 @@ const CartPage = () => {
                                     </div>
                                     <div className="flex-1">
                                         <h3 className="text-xl font-semibold text-purple-100">{item.title}</h3>
-                                        <p className="text-purple-300 mb-2">Unit Price: ₹{item.price.toFixed(2)}</p>
+                                        <p className="text-sm text-purple-300 mb-1">Size: {item.selectedSize}</p>
+                                        <p className="text-sm text-purple-300">Unit Price: {item.price.toLocaleString()} points</p>
                                         <p className="text-purple-400 mb-2 font-medium">
-                                            Item Total: ₹{(item.price * item.quantity).toFixed(2)}
+                                            Item Total: {(item.price * item.quantity).toLocaleString()} points
                                         </p>
                                         <div className="flex items-center gap-4">
                                             <div className="flex items-center border border-purple-700 rounded">
                                                 <button
-                                                    onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                                                    onClick={() => updateQuantity(item.id, item.selectedSize, item.quantity - 1)}
                                                     className="px-3 py-1 text-purple-300 hover:bg-purple-900"
                                                 >
                                                     -
                                                 </button>
                                                 <span className="px-3">{item.quantity}</span>
                                                 <button
-                                                    onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                                                    onClick={() => updateQuantity(item.id, item.selectedSize, item.quantity + 1)}
                                                     className="px-3 py-1 text-purple-300 hover:bg-purple-900"
                                                 >
                                                     +
                                                 </button>
                                             </div>
                                             <button
-                                                onClick={() => removeFromCart(item.id)}
+                                                onClick={() => removeFromCart(item.id, item.selectedSize)}
                                                 className="text-red-400 hover:text-red-300"
                                             >
                                                 Remove
@@ -77,12 +76,12 @@ const CartPage = () => {
                             <h2 className="text-xl font-bold mb-4">Order Summary</h2>
                             <div className="space-y-4">
                                 <div className="flex justify-between">
-                                    <span>Subtotal ({cart.reduce((acc, item) => acc + item.quantity, 0)} items)</span>
-                                    <span>₹{cartTotal.toFixed(2)}</span>
+                                    <span>Subtotal (...)</span>
+                                    <span>{cartTotal.toLocaleString()} points</span>
                                 </div>
                                 <div className="flex justify-between font-bold text-lg">
                                     <span>Total</span>
-                                    <span>₹{cartTotal.toFixed(2)}</span>
+                                    <span>{cartTotal.toLocaleString()} points</span>
                                 </div>
                                 <button className="w-full bg-purple-600 text-white py-3 rounded hover:bg-purple-700 transition">
                                     Proceed to Checkout
@@ -97,3 +96,5 @@ const CartPage = () => {
 };
 
 export default CartPage;
+
+
