@@ -1,10 +1,22 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App'
-import './index.css' // Must include this!
+import './index.css';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+import { BrowserRouter } from 'react-router-dom';
+import { CartProvider } from './context/CartContext';
+import { ToastProvider } from './context/ToastContext'; // ✅ Import this
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+const root = ReactDOM.createRoot(document.getElementById('root'));
+
+root.render(
     <React.StrictMode>
-        <App />
+        <BrowserRouter>
+            <CartProvider>
+                <ToastProvider> {/* ✅ Wrap App with ToastProvider */}
+                    <App />
+                </ToastProvider>
+            </CartProvider>
+        </BrowserRouter>
     </React.StrictMode>
-)
+);
+
