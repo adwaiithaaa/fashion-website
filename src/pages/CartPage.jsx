@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { FaHome } from 'react-icons/fa';
 
 const CartPage = () => {
     const {
@@ -13,6 +14,15 @@ const CartPage = () => {
     return (
         <div className="min-h-screen bg-black text-white py-12">
             <div className="container mx-auto px-4">
+
+                {/* Back to Home icon */}
+                <div className="mb-6">
+                    <Link to="/" className="inline-flex items-center text-purple-400 hover:text-purple-200">
+                        <FaHome className="mr-2" />
+                        Back to Shopping
+                    </Link>
+                </div>
+
                 <h1 className="text-3xl font-bold mb-8 text-purple-300">Your Shopping Cart</h1>
 
                 {cart.length === 0 ? (
@@ -83,9 +93,11 @@ const CartPage = () => {
                                     <span>Total</span>
                                     <span>{cartTotal.toLocaleString()} points</span>
                                 </div>
-                                <button className="w-full bg-purple-600 text-white py-3 rounded hover:bg-purple-700 transition">
-                                    Proceed to Checkout
-                                </button>
+                                <Link to="/checkout">
+                                    <button className="w-full bg-purple-600 text-white py-3 rounded hover:bg-purple-700 transition">
+                                        Proceed to Checkout
+                                    </button>
+                                </Link>
                             </div>
                         </div>
                     </div>

@@ -4,7 +4,8 @@ import { motion } from 'framer-motion';
 import { products } from '../data/products';
 import { ProductSkeleton } from '../components/ProductSkeleton';
 import { useCart } from '../context/CartContext';
-import reva from '../assets/reva.jpg';
+import reva from "../assets/images/reva.jpg";
+
 
 const MainSellerPage = () => {
     const [loading, setLoading] = useState(true);
