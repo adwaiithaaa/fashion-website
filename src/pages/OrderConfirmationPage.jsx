@@ -8,7 +8,7 @@ const OrderConfirmationPage = () => {
             <FaCheckCircle className="text-green-400 text-6xl mb-4" />
             <h1 className="text-3xl font-bold text-purple-300 mb-2">Order Confirmed!</h1>
             <p className="text-gray-400 text-center max-w-md mb-6">
-                Thank you for your purchase. Your order has been placed successfully. You will receive an email with the details shortly.
+                Thank you for your purchase. Your order has been placed successfully.
             </p>
             <Link to="/" className="inline-flex items-center bg-purple-600 px-6 py-3 rounded hover:bg-purple-700 text-white">
                 <FaHome className="mr-2" />

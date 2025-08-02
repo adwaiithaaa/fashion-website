@@ -22,9 +22,11 @@ const ProductDetailPage = () => {
         }
 
         const productWithSize = {
-            ...product,
-            selectedSize,
-            uniqueId: `${product.id}-${selectedSize}`,
+            id: product.id,
+            title: product.title,
+            price: product.price,
+            image: product.image,
+            selectedSize: selectedSize,
         };
 
         addToCart(productWithSize);
@@ -103,6 +105,8 @@ const ProductDetailPage = () => {
 };
 
 export default ProductDetailPage;
+
+
 
 
 

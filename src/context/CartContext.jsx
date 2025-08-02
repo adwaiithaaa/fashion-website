@@ -23,10 +23,13 @@ export const CartProvider = ({ children }) => {
 
     const addToCart = (product) => {
         setCart(prevCart => {
-            const existingItem = prevCart.find(item => item.uniqueId === product.uniqueId);
+            const existingItem = prevCart.find(item =>
+                item.id === product.id && item.selectedSize === product.selectedSize
+            );
+
             if (existingItem) {
                 return prevCart.map(item =>
-                    item.uniqueId === product.uniqueId
+                    item.id === product.id && item.selectedSize === product.selectedSize
                         ? { ...item, quantity: item.quantity + 1 }
                         : item
                 );
@@ -37,7 +40,9 @@ export const CartProvider = ({ children }) => {
     };
 
     const removeFromCart = (productId, selectedSize) => {
-        setCart(prevCart => prevCart.filter(item => !(item.id === productId && item.selectedSize === selectedSize)));
+        setCart(prevCart =>
+            prevCart.filter(item => !(item.id === productId && item.selectedSize === selectedSize))
+        );
     };
 
     const updateQuantity = (productId, selectedSize, newQuantity) => {
@@ -52,6 +57,10 @@ export const CartProvider = ({ children }) => {
                 )
             );
         }
+    };
+
+    const clearCart = () => {
+        setCart([]);
     };
 
     const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
@@ -70,6 +79,7 @@ export const CartProvider = ({ children }) => {
                 addToCart,
                 removeFromCart,
                 updateQuantity,
+                clearCart,
                 cartCount,
                 cartTotal,
             }}
@@ -80,6 +90,9 @@ export const CartProvider = ({ children }) => {
 };
 
 export const useCart = () => useContext(CartContext);
+
+
+
 
 
 

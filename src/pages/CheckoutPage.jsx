@@ -7,7 +7,6 @@ const CheckoutPage = () => {
     const { cartWithItemTotals, cartTotal, clearCart } = useCart();
     const navigate = useNavigate();
 
-    // Mock user points
     const [userPoints] = useState(5000);
     const discount = cartTotal > 2000 ? cartTotal * 0.1 : 0;
     const deliveryCharge = cartTotal > 1000 ? 0 : 50;
@@ -25,6 +24,8 @@ const CheckoutPage = () => {
         agree: false,
     });
 
+    const [showTerms, setShowTerms] = useState(false);
+
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
         setForm((prev) => ({
@@ -35,24 +36,17 @@ const CheckoutPage = () => {
 
     const handleOrder = (e) => {
         e.preventDefault();
-        console.log("✅ Place Order button clicked");
-
         if (!form.agree) {
             alert('Please agree to the terms before placing order.');
             return;
         }
-
         if (!hasEnoughPoints) {
             alert('You do not have enough points to place this order.');
             return;
         }
-
         clearCart();
         navigate('/order-confirmation');
     };
-
-
-
 
     const deliveryDate = new Date();
     deliveryDate.setDate(deliveryDate.getDate() + 5);
@@ -64,7 +58,6 @@ const CheckoutPage = () => {
 
     return (
         <div className="min-h-screen bg-black text-white p-8">
-            {/* Back Link */}
             <div className="mb-6">
                 <Link to="/" className="inline-flex items-center text-purple-400 hover:text-purple-200">
                     <FaArrowLeft className="mr-2" />
@@ -74,7 +67,6 @@ const CheckoutPage = () => {
 
             <h2 className="text-3xl font-bold mb-6">Checkout</h2>
 
-            {/* Points Summary */}
             <div className="bg-gray-900 p-4 mb-6 rounded-lg">
                 <h3 className="text-lg font-semibold mb-2 text-purple-300">Points Summary</h3>
                 <div className="space-y-1 text-sm">
@@ -92,7 +84,6 @@ const CheckoutPage = () => {
                 </div>
             </div>
 
-            {/* Order Summary */}
             <div className="bg-gray-900 p-6 rounded-lg shadow-lg mb-8">
                 <h3 className="text-xl font-semibold mb-4">Your Items</h3>
                 {cartWithItemTotals.length === 0 ? (
@@ -122,7 +113,6 @@ const CheckoutPage = () => {
                             </div>
                         ))}
 
-                        {/* Cost Breakdown */}
                         <div className="mt-4 text-sm space-y-2">
                             <div className="flex justify-between">
                                 <span>Subtotal:</span>
@@ -149,11 +139,8 @@ const CheckoutPage = () => {
                 )}
             </div>
 
-            {/* Shipping Form */}
             <form onSubmit={handleOrder} className="space-y-4 max-w-xl">
-
-
-            <input
+                <input
                     name="name"
                     type="text"
                     placeholder="Full Name"
@@ -190,7 +177,6 @@ const CheckoutPage = () => {
                     className="w-full p-3 rounded bg-gray-800 border border-gray-600"
                 />
 
-                {/* Payment Method */}
                 <select
                     name="paymentMethod"
                     value={form.paymentMethod}
@@ -202,7 +188,6 @@ const CheckoutPage = () => {
                     <option value="COD">Cash on Delivery</option>
                 </select>
 
-                {/* Notes */}
                 <textarea
                     name="notes"
                     placeholder="Order Notes (optional)"
@@ -211,32 +196,51 @@ const CheckoutPage = () => {
                     className="w-full p-3 rounded bg-gray-800 border border-gray-600"
                 />
 
-                {/* Terms */}
-                <div className="flex items-center gap-2">
-                    <input
-                        type="checkbox"
-                        name="agree"
-                        checked={form.agree}
-                        onChange={handleChange}
-                        className="accent-purple-600"
-                    />
-                    <label htmlFor="agree" className="text-sm">
-                        I agree to the <span className="underline">terms & conditions</span>.
-                    </label>
+                {/* Terms and Conditions */}
+                <div className="flex flex-col gap-2 mt-4">
+                    <div className="flex items-start gap-2">
+                        <input
+                            type="checkbox"
+                            name="agree"
+                            checked={form.agree}
+                            onChange={handleChange}
+                            className="accent-purple-600 mt-1"
+                        />
+                        <label htmlFor="agree" className="text-sm text-gray-300">
+                            I agree to the{" "}
+                            <button
+                                type="button"
+                                onClick={() => setShowTerms(!showTerms)}
+                                className="underline text-purple-400 hover:text-purple-300"
+                            >
+                                Terms and Conditions
+                            </button>
+                        </label>
+                    </div>
+
+                    {showTerms && (
+                        <div className="ml-6 mt-2 bg-gray-800 p-3 rounded text-xs text-gray-400">
+                            <ul className="list-disc pl-4 space-y-1">
+                                <li>All orders are final and non-refundable once confirmed.</li>
+                                <li>Delivery times are estimates and may vary due to logistics.</li>
+                                <li>Products are subject to availability and may be limited.</li>
+                                <li>We are not liable for delays caused by third-party services.</li>
+                                <li>Misuse of the platform may lead to order cancellation.</li>
+                            </ul>
+                        </div>
+                    )}
                 </div>
 
-                {/* Submit */}
                 <button
                     type="submit"
                     disabled={!hasEnoughPoints}
                     className={`w-full py-3 rounded font-semibold transition 
-    ${hasEnoughPoints
+                        ${hasEnoughPoints
                         ? 'bg-purple-600 hover:bg-purple-500 text-white'
                         : 'bg-gray-600 text-gray-400 cursor-not-allowed'}`}
                 >
                     Place Order
                 </button>
-
             </form>
         </div>
     );
