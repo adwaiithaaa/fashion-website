@@ -6,6 +6,7 @@ import CartPage from "./pages/CartPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import OrderConfirmationPage from "./pages/OrderConfirmationPage";
 import NotFound from "./pages/NotFound";
+import BuyPointsPage from "./pages/BuyPointsPage"; // ✅ Added import
 import { FaShoppingCart } from "react-icons/fa";
 import { useCart } from "./context/CartContext";
 
@@ -31,104 +32,34 @@ function App() {
             {/* Page Transitions */}
             <AnimatePresence mode="wait">
                 <Routes location={location} key={location.pathname}>
-                    <Route
-                        path="/"
-                        element={
-                            <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                transition={{ duration: 0.5 }}
-                            >
-                                <MainSellerPage />
-                            </motion.div>
-                        }
-                    />
-                    <Route
-                        path="/shop"
-                        element={
-                            <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                transition={{ duration: 0.5 }}
-                            >
-                                <MainSellerPage />
-                            </motion.div>
-                        }
-                    />
-                    <Route
-                        path="/product/:id"
-                        element={
-                            <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                transition={{ duration: 0.5 }}
-                            >
-                                <ProductDetailPage />
-                            </motion.div>
-                        }
-                    />
-                    <Route
-                        path="/cart"
-                        element={
-                            <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                transition={{ duration: 0.5 }}
-                            >
-                                <CartPage />
-                            </motion.div>
-                        }
-                    />
-                    <Route
-                        path="/checkout"
-                        element={
-                            <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                transition={{ duration: 0.5 }}
-                            >
-                                <CheckoutPage />
-                            </motion.div>
-                        }
-                    />
-                    <Route
-                        path="/order-confirmation"
-                        element={
-                            <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                transition={{ duration: 0.5 }}
-                            >
-                                <OrderConfirmationPage />
-                            </motion.div>
-                        }
-                    />
-                    <Route
-                        path="*"
-                        element={
-                            <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                transition={{ duration: 0.5 }}
-                            >
-                                <NotFound />
-                            </motion.div>
-                        }
-                    />
+                    <Route path="/" element={<PageWrapper><MainSellerPage /></PageWrapper>} />
+                    <Route path="/shop" element={<PageWrapper><MainSellerPage /></PageWrapper>} />
+                    <Route path="/product/:id" element={<PageWrapper><ProductDetailPage /></PageWrapper>} />
+                    <Route path="/cart" element={<PageWrapper><CartPage /></PageWrapper>} />
+                    <Route path="/checkout" element={<PageWrapper><CheckoutPage /></PageWrapper>} />
+                    <Route path="/order-confirmation" element={<PageWrapper><OrderConfirmationPage /></PageWrapper>} />
+                    <Route path="/buy-points" element={<PageWrapper><BuyPointsPage /></PageWrapper>} /> {/* ✅ Added Route */}
+                    <Route path="*" element={<PageWrapper><NotFound /></PageWrapper>} />
                 </Routes>
             </AnimatePresence>
         </>
     );
 }
 
+// Helper to reduce repetition
+const PageWrapper = ({ children }) => (
+    <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.5 }}
+    >
+        {children}
+    </motion.div>
+);
+
 export default App;
+
 
 
 
