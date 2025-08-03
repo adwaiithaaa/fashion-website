@@ -7,13 +7,14 @@ const CheckoutPage = () => {
     const { cartWithItemTotals, cartTotal, clearCart } = useCart();
     const navigate = useNavigate();
 
-    const [userPoints] = useState(5000);
-
+    const initialPoints = parseInt(localStorage.getItem('remainingPoints')) || 5000;
+    const [userPoints, setUserPoints] = useState(initialPoints);
     const [couponCode, setCouponCode] = useState('');
     const [couponApplied, setCouponApplied] = useState(false);
+    const [showTerms, setShowTerms] = useState(false);
 
     const baseDiscount = cartTotal > 2000 ? cartTotal * 0.1 : 0;
-    const extraDiscount = couponApplied ? cartTotal * 0.1 : 0; // 10% for valid coupon
+    const extraDiscount = couponApplied ? cartTotal * 0.1 : 0;
     const totalDiscount = baseDiscount + extraDiscount;
 
     const deliveryCharge = cartTotal > 1000 ? 0 : 50;
@@ -61,6 +62,10 @@ const CheckoutPage = () => {
             return;
         }
 
+        if (form.paymentMethod === 'Points') {
+            localStorage.setItem('remainingPoints', remainingPoints);
+        }
+
         clearCart();
         navigate('/order-confirmation');
     };
@@ -84,21 +89,22 @@ const CheckoutPage = () => {
 
             <h2 className="text-3xl font-bold mb-6">Checkout</h2>
 
-            <div className="bg-gray-900 p-4 mb-6 rounded-lg">
-                <h3 className="text-lg font-semibold mb-2 text-purple-300">Points Summary</h3>
-                <div className="space-y-1 text-sm">
-                    <p>Your Points: <span className="font-semibold text-white">{userPoints.toLocaleString()} pts</span></p>
-                    <p>Final Total: <span className="text-white font-semibold">{finalTotal.toLocaleString()} pts</span></p>
+            <div className="space-y-1 text-sm">
+                <p>Your Points: <span className="font-semibold text-white">{userPoints.toLocaleString()} pts</span></p>
+                <p>Final Total: <span className="text-white font-semibold">{finalTotal.toLocaleString()} pts</span></p>
+
+                {form.paymentMethod === 'Points' && (
                     <p>
-                        Remaining Points:{" "}
+                        Balance After Purchase:{" "}
                         <span className={`font-semibold ${hasEnoughPoints ? "text-green-400" : "text-red-400"}`}>
                             {remainingPoints.toLocaleString()} pts
                         </span>
                     </p>
-                    {form.paymentMethod === 'Points' && !hasEnoughPoints && (
-                        <p className="text-red-400">❌ Not enough points to complete this order.</p>
-                    )}
-                </div>
+                )}
+
+                {form.paymentMethod === 'Points' && !hasEnoughPoints && (
+                    <p className="text-red-400">❌ Not enough points to complete this order.</p>
+                )}
             </div>
 
             <div className="bg-gray-900 p-6 rounded-lg shadow-lg mb-8">
@@ -162,7 +168,6 @@ const CheckoutPage = () => {
                 <input name="email" type="email" placeholder="Email" value={form.email} onChange={handleChange} required className="w-full p-3 rounded bg-gray-800 border border-gray-600" />
                 <input name="phone" type="tel" placeholder="Phone Number" value={form.phone} onChange={handleChange} required className="w-full p-3 rounded bg-gray-800 border border-gray-600" />
 
-                {/* Payment Method */}
                 <select name="paymentMethod" value={form.paymentMethod} onChange={handleChange} className="w-full p-3 rounded bg-gray-800 border border-gray-600">
                     <option value="UPI">UPI</option>
                     <option value="Card">Credit/Debit Card</option>
@@ -170,7 +175,6 @@ const CheckoutPage = () => {
                     <option value="Points">Points</option>
                 </select>
 
-                {/* Coupon Code */}
                 <div className="flex items-center gap-3">
                     <input
                         type="text"
@@ -188,7 +192,6 @@ const CheckoutPage = () => {
                     </button>
                 </div>
 
-                {/* Notes */}
                 <textarea
                     name="notes"
                     placeholder="Order Notes (optional)"
@@ -197,25 +200,37 @@ const CheckoutPage = () => {
                     className="w-full p-3 rounded bg-gray-800 border border-gray-600"
                 />
 
-                {/* Terms */}
-                <div className="flex items-start gap-3 mt-4">
-                    <input
-                        type="checkbox"
-                        name="agree"
-                        checked={form.agree}
-                        onChange={handleChange}
-                        className="accent-purple-600 mt-1"
-                    />
-                    <label htmlFor="agree" className="text-sm text-gray-300">
-                        I agree to the <span className="underline cursor-pointer">Terms and Conditions</span>, which include:
-                        <ul className="list-disc pl-4 mt-2 text-xs text-gray-400 space-y-1">
+                {/* Terms and Conditions */}
+                <div className="flex flex-col gap-3 mt-4">
+                    <div className="flex items-start gap-3">
+                        <input
+                            type="checkbox"
+                            name="agree"
+                            checked={form.agree}
+                            onChange={handleChange}
+                            className="accent-purple-600 mt-1"
+                        />
+                        <label htmlFor="agree" className="text-sm text-gray-300">
+                            I agree to the{" "}
+                            <button
+                                type="button"
+                                onClick={() => setShowTerms(!showTerms)}
+                                className="underline text-purple-400 hover:text-purple-200"
+                            >
+                                Terms and Conditions
+                            </button>
+                        </label>
+                    </div>
+
+                    {showTerms && (
+                        <ul className="list-disc pl-6 mt-1 text-xs text-gray-400 space-y-1">
                             <li>All orders are final and non-refundable once confirmed.</li>
                             <li>Delivery times are estimates and may vary due to logistics.</li>
                             <li>Products are subject to availability and may be limited.</li>
                             <li>We are not liable for delays caused by third-party services.</li>
                             <li>Misuse of the platform may lead to order cancellation.</li>
                         </ul>
-                    </label>
+                    )}
                 </div>
 
                 <button
@@ -229,12 +244,24 @@ const CheckoutPage = () => {
                 >
                     Place Order
                 </button>
+
+                <button
+                    onClick={() => {
+                        localStorage.removeItem('remainingPoints');
+                        setUserPoints(5000);
+                    }}
+                    className="text-xs text-red-400 underline mt-2"
+                >
+                    Reset Points
+                </button>
+
             </form>
         </div>
     );
 };
 
 export default CheckoutPage;
+
 
 
 

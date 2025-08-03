@@ -31,7 +31,7 @@ export const products = [
         material: "Pure Silk",
         price: 1349,
         category: "men",
-        sizes: ["One Size"],
+        sizes: ["S", "M", "L", "XL"],
         colors: ["Red", "Gold"],
         inStock: true
     },
@@ -47,6 +47,62 @@ export const products = [
         colors: ["Rose Gold", "Gold"],
         inStock: true
     },
+
+    {
+        id: 5,
+        title: "Men's Shirt",
+        image: "/src/assets/images/shirt.png",
+        description: "Blue Slim Fit Striped Short Sleeves Cotton Casual Shirt",
+        material: "Pure Cotton",
+        price: 781,
+        category: "men",
+        sizes: ["S", "M", "L", "XL"],
+        colors: ["Blue"],
+        inStock: true
+    },
+
+    {
+        id: 6,
+        title: "Women's Co-Ords",
+        image: "/src/assets/images/coords.png",
+        description: "V Neck Top With Trousers",
+        material: "Polyester",
+        price: 3494,
+        category: "women",
+        sizes: ["S", "M", "L", "XL"],
+        colors: ["Blue"],
+        inStock: true
+    },
+
+    {
+        id: 7,
+        title: "Men's Sports Shoes",
+        image: "/src/assets/images/shoes.png",
+        description: "Men Mesh Walking Shoe",
+        material: "Mesh",
+        price: 5600,
+        category: "men",
+        sizes: ["6", "7", "8", "9"],
+        colors: ["White"],
+        inStock: true
+    },
+
+    {
+        id: 8,
+        title: "Backpack",
+        image: "/src/assets/images/backpack.png",
+        description: "Clair Black Backpack with Adjustable Strap",
+        material: "Leather",
+        price: 5600,
+        category: "accessories",
+        sizes: ["One Size"],
+        colors: ["Brown"],
+        inStock: true
+    },
+
+
+
+
 
     // Add more products...
 ];
