@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FaCheckCircle, FaHome } from 'react-icons/fa';
+import { FaCheckCircle, FaHome, FaEnvelope } from 'react-icons/fa';
 
 const OrderConfirmationPage = () => {
     const [remainingPoints, setRemainingPoints] = useState(null);
@@ -16,9 +16,15 @@ const OrderConfirmationPage = () => {
         <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-8">
             <FaCheckCircle className="text-green-400 text-6xl mb-4" />
             <h1 className="text-3xl font-bold text-purple-300 mb-2">Order Confirmed!</h1>
-            <p className="text-gray-400 text-center max-w-md mb-6">
+            <p className="text-gray-400 text-center max-w-md mb-4">
                 Thank you for your purchase. Your order has been placed successfully.
             </p>
+
+            {/* ✉️ Email sent message */}
+            <div className="flex items-center text-sm text-blue-300 mb-6">
+                <FaEnvelope className="mr-2" />
+                A confirmation email has been sent to your inbox.
+            </div>
 
             {remainingPoints !== null && (
                 <div className="text-lg text-green-400 mb-4">
@@ -38,5 +44,3 @@ const OrderConfirmationPage = () => {
 };
 
 export default OrderConfirmationPage;
-
-

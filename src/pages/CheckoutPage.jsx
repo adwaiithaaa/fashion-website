@@ -14,6 +14,7 @@ const CheckoutPage = () => {
     const [showTerms, setShowTerms] = useState(false);
 
     const baseDiscount = cartTotal > 2000 ? cartTotal * 0.1 : 0;
+
     const extraDiscount = couponApplied ? cartTotal * 0.1 : 0;
     const totalDiscount = baseDiscount + extraDiscount;
 
@@ -261,9 +262,3 @@ const CheckoutPage = () => {
 };
 
 export default CheckoutPage;
-
-
-
-
-
-
